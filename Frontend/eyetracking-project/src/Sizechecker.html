@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Window Size Checker</title>
+</head>
+<body>
+    <script>
+        // 현재 창의 너비와 높이를 확인합니다.
+        var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+        // 너비와 높이 출력
+        console.log("창 너비: " + width);
+        console.log("창 높이: " + height);
+    </script>
+</body>
+</html>

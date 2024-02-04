@@ -1,0 +1,140 @@
+@font-face {
+  font-family: "DosGothic";
+  src: url(./fonts/DOSGothic.ttf);
+}
+@font-face {
+  font-family: "DOSIyagiBoldface";
+  src: url(./fonts/DOSIyagiBoldface.ttf);
+}
+@font-face {
+  font-family: "DOSMyungjo";
+  src: url(./fonts/DOSMyungjo.ttf);
+}
+@font-face {
+  font-family: "DOSPilgi";
+  src: url(./fonts/DOSPilgi.ttf);
+}
+@font-face {
+  font-family: "DOSSaemmul";
+  src: url(./fonts/DOSSaemmul.ttf);
+}
+@font-face {
+  font-family: "MiraeroNormal";
+  src: url(./fonts/MiraeroNormal.ttf);
+}
+@font-face {
+  font-family: "Sam3KRFont";
+  src: url(./fonts/Sam3KRFont.ttf);
+}
+
+html {
+  --color-texta: #1d1d1d;
+  --color-textb: #fff;
+  cursor : crosshair;
+}
+
+
+.button {
+  width: 150px;
+  height: 40px;
+  margin-top: 20px;
+  background-color: #333;
+  color: #fff;
+  font-size: 30px;
+  font-family: 'DOSMyungjo';
+  border: 2px solid #fff;
+  padding: 4px 8px;
+  outline: none;
+  transition: transform 0.2s ease;
+}
+
+.button:hover {
+  background-color: rgb(222, 222, 222);
+  color: rgb(0, 0, 0);
+  transform: scale(1.2);
+  cursor : crosshair;
+}
+
+
+/* Apply cursor effect on hover */
+.button:hover + .cursor {
+  transform: scale(2); 
+  background-color: rgba(0, 0, 255, 0.5);
+  border: none;
+}
+
+
+.triangle-item::before {
+  content: '▶'; 
+  display: inline-block;
+  width: 16px; 
+  height: 16px;
+  color: #000; 
+  margin-right: 8px; 
+}
+
+
+.link:hover{
+  font-size: 1.2em;
+}
+
+.webcam-container {
+  position: relative;
+  bottom: 40px;
+}
+
+.capture-button {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  padding: 5px 20px;
+  background-color: purple;
+  color: #fff;
+  font-family: "DOSIyagiBoldface";
+  font-size: 25px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.capture-button:hover {
+  transform: translateX(-50%) scale(1.4); 
+    cursor : crosshair;
+}
+
+.webcam-flip-horizontal {
+  transform: scaleX(-1); 
+}
+
+
+.test {
+  text-align: center;
+  margin-top: 100px;
+}
+
+.score {
+  font-size: 35px;
+  margin-bottom: 20px;
+  margin-top : 50px;
+  font-family: "Sam3KRFont";
+}
+
+.circle {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: #ffcc00;
+  border-radius: 50%;
+  cursor: crosshair;
+  animation: glow 0.5s infinite alternate; 
+}
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px 3px #ffcc00;
+  }
+  100% {
+    box-shadow: 0 0 12px 5px #ffcc00;
+  }
+}
