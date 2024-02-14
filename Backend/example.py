@@ -5,6 +5,19 @@ Check the README.md for complete documentation.
 
 import cv2
 from gaze_tracking import GazeTracking
+# file name : index.py
+# pwd : /project_name/app/main/index.py
+from flask import Blueprint, request, render_template, flash, redirect, url_for
+from flask import current_app as current_app;
+
+main = Blueprint('Backend', __name__, url_prefix='/')
+
+@main.route('/Backend', methods=['GET'])
+
+def example():    
+    testData = 'testData array'  
+
+    return render_template('/eyetracking/test', testDataHtml=testData)
 
 gaze = GazeTracking()
 webcam = cv2.VideoCapture(0)
