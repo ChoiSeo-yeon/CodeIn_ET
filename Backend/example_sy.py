@@ -12,7 +12,7 @@ while True:
 
     gaze.refresh(frame)
     new_frame = gaze.annotated_frame()
-
+    """HJ : 창의 크기 값 가져와서 가로/5, 세로/4 해서 (c_location, 30)의 값 바꿔서 점찍기"""
     if n <2 :
         if n==0 : 
             c_location = 150
@@ -40,7 +40,7 @@ while True:
         cv2.setWindowProperty('Demo', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
         cv2.imshow("Demo", new_frame)
     
-
+    """HJ : 점 위치 마다 보는곳 위치 값 가져와서 리스트 안에 넣기 총 12개"""
     if cv2.waitKey(1) == 27:
         n = n+1
         if n == 1:
