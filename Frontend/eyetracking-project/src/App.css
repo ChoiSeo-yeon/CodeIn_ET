@@ -33,19 +33,24 @@ html {
   cursor : crosshair;
 }
 
+body {
+  background-color: rgb(220, 231, 255);
+}
 
 .button {
   width: 150px;
-  height: 40px;
+  height: 45px;
+  border-radius: 10px;
   margin-top: 20px;
   background-color: #333;
   color: #fff;
   font-size: 30px;
-  font-family: 'DOSMyungjo';
+  font-family: "DOSIyagiBoldface";
   border: 2px solid #fff;
   padding: 4px 8px;
   outline: none;
   transition: transform 0.2s ease;
+  
 }
 
 .button:hover {
@@ -138,3 +143,66 @@ html {
     box-shadow: 0 0 12px 5px #ffcc00;
   }
 }
+
+@keyframes glow2 {
+  0% {
+    box-shadow: 0 0 5px 3px #ff0000;
+  }
+  100% {
+    box-shadow: 0 0 12px 5px #ff0000;
+  }
+}
+
+/*game1*/
+.game1-button{
+  padding: 5px 20px;
+  font-size : 25px;
+  font-family: "DOSIyagiBoldface";
+  background-color: black;
+  color : white;
+  border-radius: 7px;
+}
+.game1-button:hover {
+  background-color: rgb(222, 222, 222);
+  color: rgb(0, 0, 0);
+  cursor : crosshair;
+}
+
+/*wack-a-mole
+*/
+
+.mole-container{
+  position: relative;
+  margin-top: -100px; 
+  margin-bottom: 100px;
+  margin-left: 100px;
+  margin-right: 100px;
+  background-color: rgb(2, 175, 2);
+  font-family: "DOSIyagiBoldface";
+  font-size: 30px;
+  border-radius: 10px;
+  cursor: url('./images/active.png'), auto;
+}
+
+.mole-container .mole-grid .mole-row img {
+  width: 150px; 
+  height: 150px; 
+  cursor: url('./images/active.png'), auto;
+}
+
+.mole-button{
+  padding: 5px 20px;
+  font-size : 25px;
+  font-family: "DOSIyagiBoldface";
+  background-color: black;
+  color : white;
+  border-radius: 7px;
+}
+
+.mole-button:hover {
+  background-color: rgb(222, 222, 222);
+  color: rgb(0, 0, 0);
+  cursor : crosshair;
+}
+
+

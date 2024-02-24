@@ -77,9 +77,9 @@ function Test() {
       ) : (
         <>
           {!gameOver ? (
-            <div className="score">score : {score}</div>
+            <div className="score" style={{ fontFamily: "DOSIyagiBoldface" }}>score : {score}</div>
           ) : (
-            <div className="score">Game over ! <br/><br/> 걸린 시간: {formatTime(time)}</div>
+            <div className="score" style={{ fontFamily: "DOSIyagiBoldface" }}>Game over ! <br/><br/> 걸린 시간: <span style={{ color: 'palevioletred' }}>{formatTime(time)}</span></div>
           )}
         </>
       )}
