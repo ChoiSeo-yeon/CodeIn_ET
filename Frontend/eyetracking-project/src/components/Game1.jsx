@@ -1,76 +1,100 @@
 import React, { useState, useEffect } from 'react';
+import '../App.css';
 
-const Game1 = () => {
-  const [isGameStarted, setIsGameStarted] = useState(false);
-  const [targetPosition, setTargetPosition] = useState({ x: -100, y: -100 }); 
-  const [startTime, setStartTime] = useState(null);
-  const [elapsedTime, setElapsedTime] = useState(null);
+function Game1() {
+  const [score, setScore] = useState(0);
+  const [time, setTime] = useState(0);
+  const [circles, setCircles] = useState([]);
+  const [gameOver, setGameOver] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
 
   useEffect(() => {
-    if (isGameStarted) {
-      const x = Math.random() * (window.innerWidth - 50); 
-      const y = Math.random() * (window.innerHeight - 50); 
+    const interval = setInterval(() => {
+      if (!gameOver && gameStarted) {
+        setTime((prevTime) => prevTime + 1);
+      }
+    }, 1000);
 
-      setTargetPosition({ x, y });
-      setStartTime(new Date());
-      console.log(`Target position: x = ${x}, y = ${y}`); // 위치 정보 콘솔에 표시
+    return () => clearInterval(interval);
+  }, [gameOver, gameStarted]);
 
-      // 셀 번호 계산
-      const column = Math.floor(x / (window.innerWidth / 5)) + 1;
-      const row = Math.floor(y / (window.innerHeight / 4)) + 1;
-      const cellNumber = (row - 1) * 5 + column;
-      console.log(`Cell number: ${cellNumber}`);
+  useEffect(() => {
+    if (circles.length === 0) {
+      generateCircle();
     }
-  }, [isGameStarted]);
+  }, [circles]);
 
-  const handleTargetClick = () => {
-    if (isGameStarted) {
-      const endTime = new Date();
-      const elapsedMilliseconds = endTime - startTime;
-      const elapsedSeconds = elapsedMilliseconds / 1000;
+  const handleClick = (id, top, left) => {
+    if (!gameOver) {
+      if (!gameStarted) {
+        setGameStarted(true);
+      }
 
-      setElapsedTime(elapsedSeconds.toFixed(2));
-      setIsGameStarted(false);
+      // 그리드 칸 크기 계산
+      const gridWidth = window.innerWidth / 5;
+      const gridHeight = window.innerHeight / 4;
+
+      // 클릭한 동그라미의 위치를 그리드 칸 번호로 변환
+      const column = Math.floor(left / gridWidth) + 1;
+      const row = Math.floor(top / gridHeight) + 1;
+      const cellNumber = (row - 1) * 5 + column;
+
+      console.log(`Clicked circle position: ${cellNumber}`);
+
+      const updatedCircles = circles.map((circle) =>
+        circle.id === id ? { ...circle, isVisible: false } : circle
+      );
+      setCircles(updatedCircles);
+      setScore((prevScore) => prevScore + 1);
+
+      if (score + 1 === 10) {
+        setGameOver(true);
+      } else {
+        generateCircle(); 
+      }
     }
   };
-
-  const handleStartGame = () => {
-    setElapsedTime(null); 
-    setIsGameStarted(true); 
+  
+  const generateCircle = () => {
+    const newCircle = {
+      id: circles.length,
+      top: Math.random() * (window.innerHeight - 100),
+      left: Math.random() * (window.innerWidth - 100),
+      isVisible: true,
+    };
+    setCircles(() => [newCircle]); 
+  };
+  
+  const formatTime = (time) => {
+    const seconds = time % 60;
+    return `${seconds}초 ${seconds < 10 ? `0${seconds}` : seconds}`;
   };
 
   return (
-    <div style={{ position: 'relative', height: '100vh', cursor: 'crosshair' }} onClick={handleTargetClick}>
-      {isGameStarted && (
-        <div
-          style={{
-            position: 'absolute',
-            top: targetPosition.y,
-            left: targetPosition.x,
-            width: '50px',
-            height: '50px',
-            borderRadius: '50%',
-            backgroundColor: 'red',
-            animation: 'glow2 0.5s infinite alternate'
-          }}
-        />
+    <div className="app">
+      {!gameStarted ? (
+        <h1 style={{ fontFamily: 'Sam3KRFont'}}>동그라미를 클릭하는 순간 시작됩니다.</h1>
+      ) : (
+        <>
+          {!gameOver ? (
+            <div className="score" style={{ fontFamily: "DOSIyagiBoldface" }}>score : {score}</div>
+          ) : (
+            <div className="score" style={{ fontFamily: "DOSIyagiBoldface" }}>Game over ! <br/><br/> 걸린 시간: <span style={{ color: 'palevioletred' }}>{formatTime(time)}</span></div>
+          )}
+        </>
       )}
-
-      {!isGameStarted && !elapsedTime && (
-        <div style={{ textAlign: 'center', marginTop: '50px', cursor: 'crosshair', fontFamily: 'DOSIyagiBoldface', fontSize: '35px' }}>
-          <p>Click the <span style={{ color: 'red' }}>red circle</span> as fast as you can!<br/></p>
-          <button onClick={handleStartGame} className='game1-button'>Start !</button>
-        </div>
-      )}
-
-      {elapsedTime && (
-        <div style={{ textAlign: 'center', marginTop: '20px', fontFamily: 'DOSIyagiBoldface', fontSize: '35px' }}>
-          <p><span style={{ color: 'red' }}>{elapsedTime} seconds </span> 가 걸렸습니다 !</p>
-          <button onClick={() => window.location.reload()} className='game1-button'>Play Again</button>
-        </div>
-      )}
+      {circles.map((circle) => (
+        circle.isVisible && (
+          <div
+            key={circle.id}
+            className="circle"
+            style={{ top: circle.top, left: circle.left }}
+            onClick={() => handleClick(circle.id, circle.top, circle.left)}
+          ></div>
+        )
+      ))}
     </div>
   );
-};
+}
 
 export default Game1;

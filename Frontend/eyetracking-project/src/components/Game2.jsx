@@ -1,121 +1,76 @@
 import React, { useState, useEffect } from 'react';
-import '../App.css';
-import holeImage from '../images/hole.png';
-import upImage from '../images/up.png';
 
 const Game2 = () => {
-    const [moles, setMoles] = useState(Array(3).fill(null).map(() => Array(3).fill(false)));
-    const [score, setScore] = useState(0);
-    const [time, setTime] = useState(20);
-    const [gameStarted, setGameStarted] = useState(false);
-    const [gameOver, setGameOver] = useState(false);
+  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [targetPosition, setTargetPosition] = useState({ x: -100, y: -100 }); 
+  const [startTime, setStartTime] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState(null);
 
-    useEffect(() => {
-        let timer;
+  useEffect(() => {
+    if (isGameStarted) {
+      const x = Math.random() * (window.innerWidth - 50); 
+      const y = Math.random() * (window.innerHeight - 50); 
 
-        if (gameStarted) {
-            timer = setInterval(() => {
-                setTime(prevTime => {
-                    if (prevTime === 0) {
-                        clearInterval(timer);
-                        setGameOver(true);
-                        return 0;
-                    }
-                    return prevTime - 1;
-                });
-            }, 1000);
-        }
+      setTargetPosition({ x, y });
+      setStartTime(new Date());
+      console.log(`Target position: x = ${x}, y = ${y}`); // 위치 정보 콘솔에 표시
 
-        return () => clearInterval(timer);
-    }, [gameStarted]);
+      // 셀 번호 계산
+      const column = Math.floor(x / (window.innerWidth / 5)) + 1;
+      const row = Math.floor(y / (window.innerHeight / 4)) + 1;
+      const cellNumber = (row - 1) * 5 + column;
+      console.log(`Cell number: ${cellNumber}`);
+    }
+  }, [isGameStarted]);
 
-    useEffect(() => {
-        let moleGenerator;
+  const handleTargetClick = () => {
+    if (isGameStarted) {
+      const endTime = new Date();
+      const elapsedMilliseconds = endTime - startTime;
+      const elapsedSeconds = elapsedMilliseconds / 1000;
 
-        if (gameStarted && !gameOver) {
-            moleGenerator = setInterval(() => {
-                const randomRow = Math.floor(Math.random() * 3);
-                const randomCol = Math.floor(Math.random() * 3);
-                const newMoles = moles.map(row => [...row]);
-                newMoles[randomRow][randomCol] = true;
-                setMoles(newMoles);
+      setElapsedTime(elapsedSeconds.toFixed(2));
+      setIsGameStarted(false);
+    }
+  };
 
-                setTimeout(() => {
-                    newMoles[randomRow][randomCol] = false;
-                    setMoles(newMoles);
-                }, 800);
-            }, 1000);
-        }
+  const handleStartGame = () => {
+    setElapsedTime(null); 
+    setIsGameStarted(true); 
+  };
 
-        return () => clearInterval(moleGenerator);
-    }, [gameStarted, moles, gameOver]);
+  return (
+    <div style={{ position: 'relative', height: '100vh', cursor: 'crosshair' }} onClick={handleTargetClick}>
+      {isGameStarted && (
+        <div
+          style={{
+            position: 'absolute',
+            top: targetPosition.y,
+            left: targetPosition.x,
+            width: '50px',
+            height: '50px',
+            borderRadius: '50%',
+            backgroundColor: 'red',
+            animation: 'glow2 0.5s infinite alternate'
+          }}
+        />
+      )}
 
-    const handleStartGame = () => {
-        setGameStarted(true);
-        setMoles(Array(3).fill(null).map(() => Array(3).fill(false)));
-        setGameOver(false);
-    };
+      {!isGameStarted && !elapsedTime && (
+        <div style={{ textAlign: 'center', marginTop: '50px', cursor: 'crosshair', fontFamily: 'DOSIyagiBoldface', fontSize: '35px' }}>
+          <p>Click the <span style={{ color: 'red' }}>red circle</span> as fast as you can!<br/></p>
+          <button onClick={handleStartGame} className='game1-button'>Start !</button>
+        </div>
+      )}
 
-    const handleMoleClick = (row, col) => {
-        if (moles[row][col]) {
-            const newMoles = [...moles];
-            newMoles[row][col] = false;
-            setMoles(newMoles);
-            setScore(prevScore => prevScore + 1);           
-        }
-        const gridNumber = row * 3 + col + 1;
-    console.log(`Clicked grid position: ${gridNumber}`);
-    };
-
-    const handleRestart = () => {
-        setMoles(Array(3).fill(null).map(() => Array(3).fill(false)));
-        setScore(0);
-        setTime(20);
-        setGameStarted(false);
-        setGameOver(false);
-    };
-
-    return (
-      <div className="mole-container">
-        <br/>
-        <h1 style={{ fontFamily: "DOSPilgi" }}>두더지 잡기 게임</h1>
-          {time !== 0 && ( 
-              <div>
-                  <p>Time Left: {time}</p>
-                  <p>Score: {score}</p>
-              </div>
-          )}
-          {time === 0 && (
-              <div>
-                  <h2>Game Over!</h2>
-                  <p>두더지 {score} 마리를 잡았습니다 !</p>
-                  <button className="mole-button" onClick={handleRestart}>Restart</button>
-              </div>
-          )}
-          {!gameStarted && (
-              <button className="mole-button" onClick={handleStartGame}>START</button>
-          )}
-          <div className="mole-game">
-              <div className="mole-grid">
-                  {moles.map((row, rowIndex) => (
-                      <div key={rowIndex} className="mole-row">
-                          {row.map((mole, colIndex) => (
-                              <img
-                                  key={colIndex}
-                                  src={mole ? upImage : holeImage}
-                                  alt="mole"
-                                  className={`mole-hole mole-hole-${rowIndex}-${colIndex}`}
-                                  onClick={() => handleMoleClick(rowIndex, colIndex)}
-                              />
-                          ))}
-                      </div>
-                  ))}
-              </div>
-              <br/>
-          </div>
-      </div>
+      {elapsedTime && (
+        <div style={{ textAlign: 'center', marginTop: '20px', fontFamily: 'DOSIyagiBoldface', fontSize: '35px' }}>
+          <p><span style={{ color: 'red' }}>{elapsedTime} seconds </span> 가 걸렸습니다 !</p>
+          <button onClick={() => window.location.reload()} className='game1-button'>Play Again</button>
+        </div>
+      )}
+    </div>
   );
-  
 };
 
 export default Game2;

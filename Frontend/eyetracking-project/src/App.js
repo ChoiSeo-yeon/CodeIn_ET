@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import "./App.css";
 import Menu from './Menu';
 import WebcamComponent from "./WebcamComponent"; 
-import Test from './components/Test'; 
 import Game1 from './components/Game1'; 
 import Game2 from './components/Game2'; 
+import Game3 from './components/Game3'; 
 
 
 const StartButton = () => {
@@ -42,9 +42,9 @@ const App = () => {
           <Route path = "/webcam" element = {<WebcamComponent/>} /> 
           <Route path="/menu" element={<Menu />} />
           <Route path="/" element={<AppContent />} />
-          <Route path="/test" element={<Test />} />
           <Route path="/game1" element={<Game1 />} />
           <Route path="/game2" element={<Game2 />} />
+          <Route path="/game3" element={<Game3 />} />
         </Routes>
       </Router>
     </div>
